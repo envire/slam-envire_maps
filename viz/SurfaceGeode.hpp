@@ -60,6 +60,9 @@ namespace vizkit3d {
             geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::TRIANGLE_STRIP,vertex_index,vertices->size()-vertex_index));
             vertex_index = vertices->size();
         }
+        inline osg::ref_ptr<osg::Geometry> getGeometry(){
+            return geom;
+        }
 
     private:
         osg::ref_ptr<osg::Vec3Array> vertices;

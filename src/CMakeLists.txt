@@ -78,5 +78,4 @@ rock_library(maps
         Boost_SYSTEM 
         Boost_FILESYSTEM 
         Boost_SERIALIZATION
-        CGAL
 )
