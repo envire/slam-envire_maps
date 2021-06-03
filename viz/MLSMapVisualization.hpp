@@ -39,6 +39,8 @@
 
 namespace vizkit3d
 {
+    class PatchesGeode;
+
     class MLSMapVisualization
         : public vizkit3d::MapVisualization< ::maps::grid::MLSMapKalman >
         , public vizkit3d::VizPluginAddType< ::maps::grid::MLSMap<::maps::grid::MLSConfig::SLOPE> >
@@ -63,10 +65,16 @@ namespace vizkit3d
         Q_PROPERTY(QColor vertical_cell_color READ getVerticalCellColor WRITE setVerticalCellColor)
         Q_PROPERTY(QColor negative_cell_color READ getNegativeCellColor WRITE setNegativeCellColor)
         Q_PROPERTY(QColor uncertainty_color READ getUncertaintyColor WRITE setUncertaintyColor)
+        Q_PROPERTY(int min_measurements READ getMinMeasurements WRITE setMinMeasurements)
 
         public:
             MLSMapVisualization();
             ~MLSMapVisualization();
+
+            void visualize(vizkit3d::PatchesGeode& geode, const maps::grid::SurfacePatch<maps::grid::MLSConfig::SLOPE>& p);
+            void visualize(vizkit3d::PatchesGeode& geode, const maps::grid::SurfacePatch<maps::grid::MLSConfig::PRECALCULATED>& p);
+            void visualize(vizkit3d::PatchesGeode& geode, const maps::grid::SurfacePatch<maps::grid::MLSConfig::KALMAN>& p);
+            void visualize(vizkit3d::PatchesGeode& geode, const maps::grid::SurfacePatch<maps::grid::MLSConfig::BASE>& p);
 
             Q_INVOKABLE void updateMLSPrecalculated(maps::grid::MLSMapPrecalculated const &sample)
             {vizkit3d::Vizkit3DPlugin<::maps::grid::MLSMapKalman>::updateData(sample);}
@@ -101,7 +109,7 @@ namespace vizkit3d
             virtual void updateDataIntern(::maps::grid::MLSMap<::maps::grid::MLSConfig::SLOPE> const& mls);
             virtual void updateDataIntern(::maps::grid::MLSMap<::maps::grid::MLSConfig::PRECALCULATED> const& mls);
             virtual void updateDataIntern(::maps::grid::MLSMap<::maps::grid::MLSConfig::BASE> const& mls);
-            
+
         private:
             struct Data;
             boost::scoped_ptr<Data> p;
@@ -155,6 +163,9 @@ namespace vizkit3d
             bool getConnectedSurfaceLOD() const;
             void setConnectedSurfaceLOD(bool enabled);
 
+            int getMinMeasurements() const;
+            void setMinMeasurements(int measurements);
+
         protected:
             osg::Vec4 horizontalCellColor;
             osg::Vec4 verticalCellColor;
@@ -169,6 +180,7 @@ namespace vizkit3d
             double cycleColorInterval;
             bool showPatchExtents;
             double uncertaintyScale;
+            int minMeasurements;
             bool connectedSurface;
             bool simplifySurface;
             bool connected_surface_lod;

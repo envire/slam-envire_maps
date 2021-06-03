@@ -268,6 +268,11 @@ public:
         return z_pos;
     }
 
+    int getNumerOfMeasurements() const
+    {
+        return n;
+    }
+
 protected:
     /** Grants access to boost serialization */
     friend class boost::serialization::access;
